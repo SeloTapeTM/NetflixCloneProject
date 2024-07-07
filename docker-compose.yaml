@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  frontend:
+    build:
+      context: NetflixFrontend
+    networks:
+      - public-net-1
+    depends_on:
+      - api
+    environment:
+      - MOVIE_CATALOG_SERVICE=http://api:8081
+    ports:
+      - 3000:3000
+  api:
+    build:
+      context: NetflixMovieCatalog
+    networks:
+      - public-net-1
+    ports:
+      - 8081:8081
+  nginx:
+    networks:
+      - public-net-1
+    build:
+      context: nginx-http-engine
+    ports:
+      - 8080:80
+    depends_on:
+      - frontend
+
+networks:
+  public-net-1:
+    driver: bridge
+

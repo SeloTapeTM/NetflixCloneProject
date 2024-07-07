@@ -1,9 +1,6 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Make port 8443 available to the world outside this container
-EXPOSE 8080
-
 # Set the working directory to /app
 WORKDIR /app
 
