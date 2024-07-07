@@ -1,20 +1,17 @@
 version: "3.9"
 services:
   frontend:
-    build:
-      context: NetflixFrontend
+    image: selotapetm/netflix-clone-frontend:1.0.0
     networks:
       - public-net-1
     depends_on:
       - api
     environment:
       - MOVIE_CATALOG_SERVICE=http://api:8081
-      - NODE_OPTIONS=--max_old_space_size=4096
     ports:
       - 3000:3000
   api:
-    build:
-      context: NetflixMovieCatalog
+    image: selotapetm/netflix-clone-api:1.0.0
     networks:
       - public-net-1
     ports:
