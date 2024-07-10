@@ -19,10 +19,13 @@ services:
   nginx:
     networks:
       - public-net-1
+    volumes:
+      - /etc/letsencrypt/live/sohord.com/privkey.pem:/cert/privkey.pem
     build:
       context: nginx-http-engine
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - frontend
 
