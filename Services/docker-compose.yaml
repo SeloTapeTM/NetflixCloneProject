@@ -20,6 +20,7 @@ services:
     networks:
       - public-net-1
     volumes:
+      - /etc/letsencrypt/live/sohord.com/fullchain.pem:/cert/fullchain.pem
       - /etc/letsencrypt/live/sohord.com/privkey.pem:/cert/privkey.pem
     build:
       context: nginx-http-engine
