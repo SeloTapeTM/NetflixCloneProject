@@ -22,7 +22,7 @@ services:
     build:
       context: nginx-http-engine
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - frontend
 
