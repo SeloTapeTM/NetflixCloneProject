@@ -28,14 +28,14 @@ jobs:
 
       - name: Build Docker image for API service
         run: |
-          IMAGE_TAG=selotapetm/netflix-api:$GITHUB_RUN_NUMBER
+          IMAGE_TAG=selotapetm/netflix-clone-api:$GITHUB_RUN_NUMBER
           docker build -t $IMAGE_TAG ./Services/NetflixMovieCatalog
           echo "::set-output name=image_tag::$IMAGE_TAG"
 
       - name: Push Docker image to registry
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push selotapetm/netflix-api:$GITHUB_RUN_NUMBER
+          docker push selotapetm/netflix-clone-api:$GITHUB_RUN_NUMBER
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
