@@ -15,15 +15,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Check Lock
-        run: |
-          sleep 30
-          while [[ -f ~/lockfile ]]; do
-            echo "CI/CD for NetflixFrontend is running, waiting..."
-            sleep 10
-          done
-          touch ~/lockfile
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -76,7 +67,3 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "compose"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      - name: Remove Lock
-        run: |
-          rm ~/lockfile
