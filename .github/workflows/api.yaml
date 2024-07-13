@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Check Lock
         run: |
+          sleep 30
           while [[ -f ~/lockfile ]]; do
             echo "CI/CD for NetflixFrontend is running, waiting..."
             sleep 10
