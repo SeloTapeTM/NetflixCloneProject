@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Services/**'
 
 jobs:
   build:
@@ -15,8 +17,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.email "github@github.com"
-          git config --global user.name "github_actions"
+          git config --global user.email "omer.daniel.1999@gmail.com"
+          git config --global user.name "SeloTapeTM"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -37,9 +39,7 @@ jobs:
 
       - name: Update Docker Compose Image Tags
         run: |
-          cd Services/
           sed -i 's/selotapetm\/netflix-clone-api:1.0.0/selotapetm\/netflix-clone-api:$GITHUB_RUN_NUMBER/g' docker-compose.yaml
-      
 
       - name: Commit and push changes
         run: |
