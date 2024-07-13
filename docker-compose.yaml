@@ -23,7 +23,7 @@ services:
       - /etc/letsencrypt/live/sohord.com/fullchain.pem:/cert/fullchain.pem
       - /etc/letsencrypt/live/sohord.com/privkey.pem:/cert/privkey.pem
     build:
-      context: nginx-http-engine
+      context: Services/nginx-http-engine
     ports:
       - 80:80
       - 443:443
