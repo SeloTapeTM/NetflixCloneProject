@@ -47,7 +47,7 @@ def update_popularity():
     new_popularity = request.json.get('popularity')
 
     if movie_id not in data_movies:
-        return jsonify({'error': 'Movie Id value not provided or not found.'}), 400
+        return jsonify({'error': 'Movie Id value not provided or not found'}), 400
 
     if new_popularity is None:
         return jsonify({'error': 'Popularity value not provided'}), 400
