@@ -45,7 +45,7 @@ jobs:
         run: |
           git config --global user.email "omer.daniel.1999@gmail.com"
           git config --global user.name "SeloTapeTM"
-          git remote add origin https://SeloTapeTM:${{ secrets.ACCESS_TOKEN }}@github.com/SeloTapeTM/NetflixCloneProject.git
+          git remote set-url origin https://SeloTapeTM:${ACCESS_TOKEN}@github.com/SeloTapeTM/NetflixCloneProject.git
           git add .
           git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service api"
           git push origin main
