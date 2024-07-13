@@ -43,6 +43,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          git config --global user.email "omer.daniel.1999@gmail.com"
+          git config --global user.name "SeloTapeTM"
           git add .
           git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service api"
           git push
