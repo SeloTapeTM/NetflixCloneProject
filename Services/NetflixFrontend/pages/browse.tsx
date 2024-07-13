@@ -38,7 +38,7 @@ export default function Browse(): React.ReactElement {
 
 const sections: Section[] = [
   {
-    heading: 'Only on Nextflix!!',
+    heading: 'Only on Nextflix!',
     endpoint: '/api/discover?type=tv',
     defaultCard: false
   },
