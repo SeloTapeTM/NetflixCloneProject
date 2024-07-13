@@ -1,0 +1,27 @@
+name: CI/CD for NetflixFrontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image for frontend
+        run: |
+          IMAGE_TAG=selotapetm/netflix-frontend:$GITHUB_RUN_NUMBER
+          docker build -t $IMAGE_TAG ./Services/NetflixFrontend
+          echo "::set-output name=image_tag::$IMAGE_TAG"
+
+      - name: Push Docker image to registry
+        run: |
+          docker push selotapetm/netflix-frontend:$GITHUB_RUN_NUMBER
