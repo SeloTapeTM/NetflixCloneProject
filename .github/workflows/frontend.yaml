@@ -59,9 +59,11 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          touch ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "cd /home/ubuntu/NetflixCloneProject/Services && git pull"
-          ssh -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "compose"
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "cd /home/ubuntu/NetflixCloneProject/Services && git pull"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "compose"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
