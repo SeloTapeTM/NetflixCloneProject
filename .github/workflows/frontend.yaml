@@ -49,6 +49,8 @@ jobs:
           git add .
           git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service frontend"
           git push origin main
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to EC2
         run: |
