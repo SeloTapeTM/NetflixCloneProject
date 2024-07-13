@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Git
+        run: |
+          git config --global user.email "github@github.com"
+          git config --global user.name "github_actions"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -24,4 +29,28 @@ jobs:
 
       - name: Push Docker image to registry
         run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push selotapetm/netflix-frontend:$GITHUB_RUN_NUMBER
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+
+      - name: Update Docker Compose Image Tags
+        run: |
+          cd Services/
+          sed -i 's/selotapetm\/netflix-clone-frontend:1.0.0/selotapetm\/netflix-clone-frontend:$GITHUB_RUN_NUMBER/g' docker-compose.yaml
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service frontend"
+          git push
+
+      - name: Deploy to EC2
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "cd /home/ubuntu/NetflixCloneProject/Services && git pull"
+          ssh -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "compose"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
