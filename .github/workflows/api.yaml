@@ -22,6 +22,7 @@ jobs:
         run: |
           git config --global user.name 'SeloTapeTM'
           git config --global user.email 'SeloTapeTM@users.noreply.github.com'
+          git pull
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -42,12 +43,12 @@ jobs:
 
       - name: Update Docker Compose Image Tags
         run: |
-          sed -i 's/selotapetm\/netflix-clone-api:.*/selotapetm\/netflix-clone-api:$GITHUB_RUN_NUMBER/g' docker-compose.yaml
+          git checkout release
+          git pull
+          sed -i "s/selotapetm\/netflix-clone-api:.*/selotapetm\/netflix-clone-api:$GITHUB_RUN_NUMBER/g" docker-compose.yaml
 
       - name: Commit and push changes
         run: |
-          git config --global user.name 'SeloTapeTM'
-          git config --global user.email 'SeloTapeTM@users.noreply.github.com'
           git add .
           git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service api"
           git push
