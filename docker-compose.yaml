@@ -29,6 +29,27 @@ services:
       - 443:443
     depends_on:
       - frontend
+  influxdb:
+    networks:
+      - public-net-1
+    image: influxdb
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+
+  grafana:
+    networks:
+      - public-net-1
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3030:3000"
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana-data:/var/lib/grafana
 
 networks:
   public-net-1:
