@@ -11,7 +11,7 @@ services:
     ports:
       - 3000:3000
   api:
-    image: selotapetm/netflix-clone-api:22
+    image: selotapetm/netflix-clone-api:23
     networks:
       - public-net-1
     ports:
