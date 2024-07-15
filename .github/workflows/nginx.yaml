@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Services/NetflixMovieCatalog/**'
+      - 'Services/nginx-http-engine/**'
 
 jobs:
   build:
@@ -24,33 +24,15 @@ jobs:
           git config --global user.email 'SeloTapeTM@users.noreply.github.com'
           git pull
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Build Docker image for API service
-        run: |
-          IMAGE_TAG=selotapetm/netflix-clone-api:$GITHUB_RUN_NUMBER
-          docker build -t $IMAGE_TAG ./Services/NetflixMovieCatalog
-          echo "::set-output name=image_tag::$IMAGE_TAG"
-
-      - name: Push Docker image to registry
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push selotapetm/netflix-clone-api:$GITHUB_RUN_NUMBER
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-
-      - name: Update Docker Compose Image Tags
+      - name: Update Nginx Files
         run: |
           git checkout release
-          git pull
-          sed -i "s/selotapetm\/netflix-clone-api:.*/selotapetm\/netflix-clone-api:$GITHUB_RUN_NUMBER/g" docker-compose.yaml
+          git checkout main Services/nginx-http-engine
 
       - name: Commit and push changes
         run: |
           git add .
-          git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service api"
+          git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service nginx"
           git push
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
