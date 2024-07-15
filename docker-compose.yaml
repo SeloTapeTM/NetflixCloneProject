@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   frontend:
-    image: selotapetm/netflix-clone-frontend:9
+    image: selotapetm/netflix-clone-frontend:10
     networks:
       - public-net-1
     depends_on:
