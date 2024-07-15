@@ -1,0 +1,46 @@
+name: CI/CD for NetflixMovieCatalog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Services/nginx-http-engine/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'SeloTapeTM'
+          git config --global user.email 'SeloTapeTM@users.noreply.github.com'
+          git pull
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Committed new docker-compose with $GITHUB_RUN_NUMBER version of service nginx"
+          git push
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to EC2
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          touch ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "cd /home/ubuntu/NetflixCloneProject/Services && git pull"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@18.199.116.222 "compose"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
